@@ -1,6 +1,6 @@
 # springboot-demo
 
-This is a SpringBoot API demo application
+This is a Spring Boot API demo application
 
 ## Endpoints 
 
