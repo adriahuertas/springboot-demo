@@ -1,0 +1,6 @@
+com/example/springbootdemo/SpringbootDemoApplication.class
+com/example/springbootdemo/student/StudentRepository.class
+com/example/springbootdemo/student/StudentController.class
+com/example/springbootdemo/student/StudentService.class
+com/example/springbootdemo/student/Student.class
+com/example/springbootdemo/student/StudentConfig.class
