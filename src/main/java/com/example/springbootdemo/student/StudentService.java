@@ -25,12 +25,13 @@ public class StudentService {
         return studentRepository.findAll(sortById);
     }
 
-    public void addNewStudent(Student student) {
+    public Student addNewStudent(Student student) {
         Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());
         if (studentOptional.isPresent()) {
             throw new IllegalStateException("Email already registered");
         }
-    studentRepository.save(student);
+        studentRepository.save(student);
+        return student;
     }
 
     public void deleteStudent(Long studentId) {
@@ -51,7 +52,7 @@ public class StudentService {
                 ));
 
         if (name != null && name.length() < 3) {
-            throw new IllegalStateException("Name must be atleast 3 letters long");
+            throw new IllegalStateException("Name must be at least 3 letters long");
         }
 
         if (email != null && email.length() >= 3) {

@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +27,17 @@ public class StudentController {
     }
 
     @PostMapping
-    public void registerNewStudent(@RequestBody Student student) {
-        studentService.addNewStudent(student);
+    public ResponseEntity<Void> registerNewStudent(@RequestBody Student student, UriComponentsBuilder uriComponentsBuilder) {
+        Student addedStudent = studentService.addNewStudent(student);
+        String uri = "/api/v1/students/" + addedStudent.getId();
+
+        return ResponseEntity.created(URI.create(uri)).build();
     }
 
     @DeleteMapping(path = "{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Long studentId) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable("studentId") Long studentId) {
         studentService.deleteStudent(studentId);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(path = "{studentId}")
