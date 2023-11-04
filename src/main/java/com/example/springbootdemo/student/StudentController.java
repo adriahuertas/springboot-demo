@@ -1,10 +1,13 @@
 package com.example.springbootdemo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/students")
@@ -32,11 +35,31 @@ public class StudentController {
     }
 
     @PutMapping(path = "{studentId}")
-    public void updateStudent(
+    public ResponseEntity<String> updateStudent(
             @PathVariable("studentId") Long studentId,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email) {
-        studentService.updateStudent(studentId, name, email);
+            @RequestBody(required = false) StudentUpdateDTO studentUpdateDTO)
+ {
+        try {
+            String name = studentUpdateDTO.getName();
+            String email = studentUpdateDTO.getEmail();
+            studentService.updateStudent(studentId, name, email);
+            return ResponseEntity.ok("Student updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping(path = "{studentId}")
+    public ResponseEntity<Student> getStudent(@PathVariable("studentId") Long studentId) {
+        Optional<Student> studentOptional = studentService.getStudent(studentId);
+
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            return ResponseEntity.ok(student);
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

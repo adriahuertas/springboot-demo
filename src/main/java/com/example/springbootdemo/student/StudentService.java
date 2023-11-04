@@ -66,4 +66,8 @@ public class StudentService {
             student.setName(name);
         }
     }
+
+    public Optional<Student> getStudent(Long studentId) {
+        return studentRepository.findById(studentId);
+    }
 }
